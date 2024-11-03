@@ -3,55 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
-    <!-- FullCalendar CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
+    <title>Mosi Test</title>
     <style>
+        /* Basic styling */
         body {
             font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        /* Clock container styling */
+        .clock-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 10px;
+        }
+
+        .clock {
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        /* Navigation menu styling */
+        nav {
+            background-color: #004d40;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+            gap: 20px;
         }
-        #calendar {
-            max-width: 900px;
-            width: 100%;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center;">My Calendar</h1>
-    <div id="calendar"></div>
 
-    <!-- FullCalendar JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                events: [
-                    // Example events
-                    { title: 'Meeting', start: '2024-11-08' },
-                    { title: 'Workshop', start: '2024-11-12' },
-                    { title: 'Conference', start: '2024-11-15', end: '2024-11-17' }
-                ]
-            });
-            calendar.render();
-        });
+<!-- Page Title -->
+<header>
+    <h1>Mosi Test</h1>
+</header>
+
+<!-- Clocks for Tehran, Vienna, and Sydney -->
+<div class="clock-container">
+    <div class="clock" id="tehranClock">Tehran: --:--:--</div>
+    <div class="clock" id="viennaClock">Vienna: --:--:--</div>
+    <div class="clock" id="sydneyClock">Sydney: --:--:--</div>
+</div>
+
+<!-- Navigation Menu -->
+<nav>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Time Booking</a></li>
+        <li><a href="#">Calendar</a></li>
+    </ul>
+</nav>
+
+<!-- JavaScript for Clocks -->
+<script>
+        function updateTime() {
+            const tehranTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Tehran", hour12: false });
+            const viennaTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Vienna", hour12: false });
+            const sydneyTime = new Date().toLocaleString("en-US", { timeZone: "Australia/Sydney", hour12: false });
+
+            document.getElementById("tehranClock").textContent = "Tehran: " + tehranTime.split(", ")[1];
+            document.getElementById("viennaClock").textContent = "Vienna: " + viennaTime.split(", ")[1];
+            document.getElementById("sydneyClock").textContent = "Sydney: " + sydneyTime.split(", ")[1];
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
     </script>
+
 </body>
 </html>
