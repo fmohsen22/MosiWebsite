@@ -93,18 +93,26 @@
     </ul>
 </nav>
 
-<!-- JavaScript for Clocks -->
+<!-- JavaScript for Fetching Data from the API -->
 <script>
-        function updateTime() {
-            const tehranTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Tehran", hour12: false });
-            const viennaTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Vienna", hour12: false });
-            const sydneyTime = new Date().toLocaleString("en-US", { timeZone: "Australia/Sydney", hour12: false });
+        async function updateTime() {
+            try {
+                // Fetch the data from the Spring Boot API
+                const response = await fetch("https://apiwebsite-1.onrender.com/api/time");
 
-            document.getElementById("tehranClock").textContent = "Tehran: " + tehranTime.split(", ")[1];
-            document.getElementById("viennaClock").textContent = "Vienna: " + viennaTime.split(", ")[1];
-            document.getElementById("sydneyClock").textContent = "Sydney: " + sydneyTime.split(", ")[1];
+                //const response = await fetch("http://localhost:8080/api/time");
+                const times = await response.json();
+
+                // Update the HTML with the data from the API
+                document.getElementById("tehranClock").textContent = "Tehran: " + times.tehran;
+                document.getElementById("viennaClock").textContent = "Vienna: " + times.vienna;
+                document.getElementById("sydneyClock").textContent = "Sydney: " + times.sydney;
+            } catch (error) {
+                console.error("Error fetching time data:", error);
+            }
         }
 
+        // Call updateTime initially and then every second
         setInterval(updateTime, 1000);
         updateTime();
     </script>
