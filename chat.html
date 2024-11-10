@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envisage Cosmetic Clinic</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5dc;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #d2b48c;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        /* Navigation Menu */
+        nav {
+            background-color: #bfb091;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Chat button styling */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #d2b48c;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 1.5em;
+            color: white;
+        }
+
+        /* Chat modal styling */
+        .chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 300px;
+            max-height: 500px;
+            background-color: white;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-modal-header {
+            background-color: #d2b48c;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            padding: 10px;
+            overflow-y: auto;
+            max-height: 400px;
+            flex-grow: 1;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .chat-input-container button {
+            padding: 10px;
+            background-color: #d2b48c;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Show the modal */
+        .show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="Clinic Logo" class="logo"> <!-- Replace with your logo path -->
+    <h1>Envisage Cosmetic Clinic</h1>
+</header>
+
+<!-- Navigation Menu -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="calendar.html">Time Booking</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Chat button -->
+<button class="chat-button" onclick="toggleChat()">💬</button>
+
+<!-- Chat modal -->
+<div id="chatModal" class="chat-modal">
+    <div class="chat-modal-header">
+        Chat with us
+        <button style="float: right; background:none; border:none; color:white; font-size:1em;" onclick="toggleChat()">✖</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-container">
+        <input type="text" id="userInput" placeholder="Type a message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    // Toggle the chat modal visibility
+    function toggleChat() {
+        document.getElementById('chatModal').classList.toggle('show');
+    }
+
+    // Send a message
+    function sendMessage() {
+        const input = document.getElementById('userInput');
+        const message = input.value;
+        if (message.trim() === '') return;
+
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Display user message
+        const userMessage = document.createElement('div');
+        userMessage.textContent = "You: " + message;
+        chatMessages.appendChild(userMessage);
+
+        // Clear input field
+        input.value = '';
+
+        // Simulate bot response
+        const botMessage = document.createElement('div');
+        botMessage.textContent = "Bot: This is a simulated response.";
+        chatMessages.appendChild(botMessage);
+
+        // Scroll to the bottom of the chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>
+
+</body>
+</html>

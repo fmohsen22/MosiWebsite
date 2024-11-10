@@ -3,46 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mosi Test</title>
+    <title>Envisage Cosmetic Clinic</title>
     <style>
-        /* Basic styling */
+        /* General Styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
+            background-color: #f5f5dc; /* Light beige */
             margin: 0;
             padding: 0;
+            color: #333;
         }
 
-        /* Header styling */
+        /* Header with Logo */
         header {
-            background-color: #00796b;
-            color: white;
+            background-color: #d2b48c; /* Tan/beige */
+            color: #333; /* Darker text color */
             padding: 20px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 100px;
+            width: auto;
+            margin-right: 20px;
         }
 
         h1 {
             margin: 0;
-            font-size: 2em;
+            font-size: 3em;
+            flex-grow: 1;
+            text-align: center;
         }
 
-        /* Clock container styling */
-        .clock-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 10px;
-        }
-
-        .clock {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        /* Navigation menu styling */
+        /* Navigation Menu */
         nav {
-            background-color: #004d40;
-            padding: 10px;
+            background-color: #bfb091; /* Beige shade */
+            padding: 10px 0;
         }
 
         nav ul {
@@ -54,29 +52,163 @@
             gap: 20px;
         }
 
-        nav ul li {
-            display: inline;
-        }
-
         nav ul li a {
-            color: white;
+            color: #333;
             text-decoration: none;
             font-size: 1.2em;
+            padding: 10px;
         }
 
         nav ul li a:hover {
             text-decoration: underline;
         }
+
+        /* Hero Section Styling */
+        .hero-section {
+            position: relative;
+            text-align: center;
+            color: white;
+            height: 60vh;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.4);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-text {
+            font-size: 2em;
+            margin: 0;
+            padding: 10px;
+        }
+
+        /* Clocks Section */
+        .clock-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .clock {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #d2b48c;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            max-width: 90%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-modal.show {
+            display: flex;
+        }
+
+        .chat-modal-header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input-container input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chat-input-container button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-left: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<!-- Page Title -->
+<!-- Header with Logo and Title -->
 <header>
-    <h1>Envisage cosmetic cllinic (Test Version) </h1>
+    <img src="logo.png" alt="Clinic Logo" class="logo"> <!-- Replace with logo path -->
+    <h1>Envisage Cosmetic Clinic</h1>
 </header>
 
-<!-- Clocks for Tehran, Vienna, and Sydney -->
+<!-- Hero Section for Image or Video -->
+<section class="hero-section">
+    <div class="hero-overlay">
+        <p class="hero-text">Enhancing Your Beauty Journey</p>
+    </div>
+    <img src="backgroundImage.png" alt="Hero Image" class="hero-image"> <!-- Replace with image path -->
+</section>
+
+<!-- Clocks for Different Locations -->
 <div class="clock-container">
     <div class="clock" id="tehranClock">Tehran: --:--:--</div>
     <div class="clock" id="viennaClock">Vienna: --:--:--</div>
@@ -86,35 +218,68 @@
 <!-- Navigation Menu -->
 <nav>
     <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="calendar.html">Time Booking</a></li> <!-- Link to calendar page -->
-        <li><a href="#">Calendar</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="calendar.html">Time Booking</a></li>
+        <li><a href="contact.html">Contact</a></li>
     </ul>
 </nav>
 
-<!-- JavaScript for Fetching Data from the API -->
+<!-- Chat Widget -->
+<div class="chat-widget">
+    <button class="chat-button" onclick="toggleChat()">💬</button>
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-modal-header">
+            <span>Chat with us</span>
+            <button class="close-chat" onclick="toggleChat()">✖</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-container">
+            <input type="text" id="userInput" placeholder="Type a message">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
 <script>
-        async function updateTime() {
-            try {
-                // Fetch the data from the Spring Boot API
-                const response = await fetch("https://apiwebsite-1.onrender.com/api/time");
-                //const response = await fetch("http://localhost:8080/api/time");
-                const times = await response.json();
+    function toggleChat() {
+        document.getElementById('chatModal').classList.toggle('show');
+    }
 
-                // Update the HTML with the data from the API
-                document.getElementById("tehranClock").textContent = "Tehran: " + times.tehran;
-                document.getElementById("viennaClock").textContent = "Vienna: " + times.vienna;
-                document.getElementById("sydneyClock").textContent = "Sydney: " + times.sydney;
-            } catch (error) {
-                console.error("Error fetching time data:", error);
-            }
+    function sendMessage() {
+        const input = document.getElementById('userInput');
+        const message = input.value;
+        if (message.trim() === '') return;
+
+        const chatMessages = document.getElementById('chatMessages');
+        const userMessage = document.createElement('div');
+        userMessage.textContent = "You: " + message;
+        chatMessages.appendChild(userMessage);
+
+        input.value = '';
+
+        const botMessage = document.createElement('div');
+        botMessage.textContent = "Bot: This is a simulated response.";
+        chatMessages.appendChild(botMessage);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function updateTime() {
+        try {
+            const response = await fetch("https://apiwebsite-1.onrender.com/api/time");
+            const times = await response.json();
+            document.getElementById("tehranClock").textContent = "Tehran: " + times.tehran;
+            document.getElementById("viennaClock").textContent = "Vienna: " + times.vienna;
+            document.getElementById("sydneyClock").textContent = "Sydney: " + times.sydney;
+        } catch (error) {
+            console.error("Error fetching time data:", error);
         }
+    }
 
-        // Call updateTime initially and then every second
-        setInterval(updateTime, 1000);
-        updateTime();
-    </script>
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
 
 </body>
 </html>

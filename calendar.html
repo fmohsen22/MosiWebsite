@@ -1,25 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Public Calendar</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
-        h1 { color: #333; margin-top: 20px; }
-        .calendar-container { width: 100%; max-width: 800px; margin-top: 20px; }
-        iframe { border: 0; width: 100%; height: 600px; }
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5dc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #d2b48c;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        /* Navigation Menu */
+        nav {
+            background-color: #bfb091;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Calendar Container */
+        .calendar-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        iframe {
+            border: 0;
+            width: 100%;
+            height: 600px;
+        }
     </style>
 </head>
 <body>
 
-<h1>My Public Calendar</h1>
+<!-- Header with Logo and Title -->
+<header>
+    <img src="logo.png" alt="Clinic Logo" class="logo"> <!-- Replace with your logo path -->
+    <h1>Envisage Cosmetic Clinic</h1>
+</header>
 
+<!-- Navigation Menu -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="calendar.html">Time Booking</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Page Title and Calendar Embed -->
 <div class="calendar-container">
-    <!-- Embed Google Calendar iframe -->
-    <iframe src="https://calendar.google.com/calendar/embed?src=fmohsen22%40gmail.com&ctz=Europe/Vienna"
-            frameborder="0" scrolling="no">
-    </iframe>
+    <h1>My Public Calendar</h1>
+    <iframe src="https://calendar.google.com/calendar/embed?src=sfaranak935@gmail.com&ctz=Europe/Vienna"
+            frameborder="0" scrolling="no"></iframe>
 </div>
 
 </body>
