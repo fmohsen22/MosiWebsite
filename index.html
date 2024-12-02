@@ -8,7 +8,7 @@
         /* General Styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5dc;
+            background-color: #FAEBD7;
             margin: 0;
             padding: 0;
             color: #333;
@@ -16,8 +16,8 @@
 
         /* Header with Logo */
         header {
-            background-color: #d2b48c;
-            color: #333;
+            background-color: #5a4023;
+            color: #d4af37;
             padding: 20px;
             display: flex;
             align-items: center;
@@ -25,10 +25,11 @@
         }
 
         .logo {
-            height: 100px;
-            width: auto;
-            margin-right: 20px;
+            height: 150px; /* Increase height */
+            width: auto;   /* Keep proportions */
+            margin-right: 10px;
         }
+
 
         h1 {
             margin: 0;
@@ -190,6 +191,125 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        /* Photo Album Styling */
+.photo-album {
+    position: relative;
+    max-width: 80%;
+    margin: 20px auto;
+    overflow: hidden;
+    border: 3px solid #d4af37; /* Optional golden border */
+    border-radius: 8px;
+}
+
+.slides img {
+    width: 100%;
+    display: none;
+    transition: opacity 1s ease-in-out;
+}
+
+.slides img.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Navigation Buttons */
+button.prev,
+button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+button.prev:hover,
+button.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+/* Timing and Weather Block Styling */
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 90%; /* Keeps everything responsive */
+    flex-wrap: wrap; /* Adjusts for smaller screens */
+}
+
+.clock {
+    flex: 1; /* All blocks share available space */
+    max-width: 250px; /* Optional: Limit width */
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #d2b48c;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.weather-forecast {
+    flex: 1; /* Share space with other blocks */
+    max-width: 250px; /* Optional: Limit width */
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #d2b48c;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.traffic-info {
+    flex: 2; /* Make the traffic block longer */
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #d2b48c;
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.important-info {
+    flex: 1; /* Share space with other blocks */
+    max-width: 250px; /* Optional: Limit width */
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #f4c2c2;
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+    border: 2px solid #d33;
+}
+
+.important-info h3 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    text-align: center;
+    color: #a00; /* Darker red for the title */
+}
+
+.important-info p {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+
     </style>
 </head>
 <body>
@@ -208,12 +328,23 @@
     <img src="backgroundImage.png" alt="Hero Image" class="hero-image"> <!-- Replace with image path -->
 </section>
 
-<!-- Clocks for Different Locations -->
-<div class="clock-container">
-    <div class="clock" id="tehranClock">Tehran: --:--:--</div>
-    <div class="clock" id="viennaClock">Vienna: --:--:--</div>
+<!-- Timing and Weather Block -->
+<div class="info-container">
     <div class="clock" id="sydneyClock">Sydney: --:--:--</div>
+    <div class="weather-forecast" id="weatherContainer">
+        <h3>Weather in Sydney</h3>
+        <p id="weatherDetails">Loading...</p>
+    </div>
+    <div class="traffic-info" id="parkingInfo">
+        <h3>Traffic & Parking Info</h3>
+        <p id="trafficDetails">Loading traffic and parking details...</p>
+    </div>
+    <div class="important-info" id="importantInfoContainer">
+        <h3>Important Info</h3>
+        <p id="importantInfoDetails">Loading important information...</p>
+    </div>
 </div>
+
 
 <!-- Navigation Menu -->
 <nav>
@@ -224,6 +355,24 @@
         <li><a href="contact.html">Contact</a></li>
     </ul>
 </nav>
+
+
+<!-- Photo Album Section -->
+<div class="photo-album">
+    <div class="slides">
+        <img src="photoalbum/photo_1.png" alt="Photo 1" class="active">
+        <img src="photoalbum/Photo_2.png" alt="Photo 2">
+        <img src="photoalbum/Photo_3.png" alt="Photo 3">
+        <img src="photoalbum/Photo_4.png" alt="Photo 4">
+        <img src="photoalbum/Photo_5.png" alt="Photo 5">
+        <img src="photoalbum/Photo_6.png" alt="Photo 6">
+        <img src="photoalbum/Photo_7.png" alt="Photo 7">
+    </div>
+    <!-- Optional: Add navigation buttons -->
+    <button class="prev" onclick="prevSlide()">&#10094;</button>
+    <button class="next" onclick="nextSlide()">&#10095;</button>
+</div>
+
 
 <!-- Chat Widget -->
 <div class="chat-widget">
@@ -292,8 +441,6 @@
         try {
             const response = await fetch("https://apiwebsite-1.onrender.com/api/time");
             const times = await response.json();
-            document.getElementById("tehranClock").textContent = "Tehran: " + times.tehran;
-            document.getElementById("viennaClock").textContent = "Vienna: " + times.vienna;
             document.getElementById("sydneyClock").textContent = "Sydney: " + times.sydney;
         } catch (error) {
             console.error("Error fetching time data:", error);
@@ -302,6 +449,143 @@
 
     setInterval(updateTime, 1000);
     updateTime();
+
+    // Function to fetch and display the weather with recommendations
+async function updateWeather() {
+    try {
+        const response = await fetch(
+            'https://api.weatherapi.com/v1/current.json?key=9ce0e65079f24178bf8143534240112&q=Sydney'
+        );
+        const data = await response.json();
+
+        // Extract weather details
+        const temperature = data.current.temp_c; // Temperature in Celsius
+        const description = data.current.condition.text; // Weather description
+        const icon = "https:" + data.current.condition.icon; // Full URL for the weather icon
+        const windSpeed = data.current.wind_kph; // Wind speed in kph
+
+        // Generate recommendations
+        let recommendation = "Have a great day!";
+        if (description.toLowerCase().includes("rain")) {
+            recommendation = "It might rain! Don't forget to bring an umbrella or a raincoat.";
+        } else if (temperature < 15) {
+            recommendation = "It's quite cold outside. Wear warm clothes!";
+        } else if (windSpeed > 30) {
+            recommendation = "It's windy today. Secure your belongings and dress appropriately.";
+        }
+
+        // Update weather details on the page
+        document.getElementById("weatherDetails").innerHTML = `
+            <img src="${icon}" alt="Weather Icon" style="vertical-align: middle; margin-right: 10px;">
+            ${description}, ${temperature}°C
+        `;
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        document.getElementById("weatherDetails").textContent = "Unable to fetch weather data.";
+    }
+}
+
+// Initial fetch and periodic updates every 5 minutes
+updateWeather();
+setInterval(updateWeather, 300000); // Update every 5 minutes
+
+
+
+    //traffic info
+    //exaple json:
+    //{
+    //"inf": "Currently, George Street has moderate traffic. Parking is available near the CBD with limited spots."
+    //}
+
+
+
+
+async function getTrafficAndParkingInfo() {
+    try {
+        // Replace the URL below with the endpoint of your own backend API
+        const response = await fetch('https://apiwebsite-1.onrender.com/api/freeslots_in_parking');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Extract the "inf" field from the API response
+        const info = data.inf || "No information available.";
+
+        // Update the HTML content with the received information
+        document.getElementById("trafficDetails").textContent = info;
+    } catch (error) {
+        console.error("Error fetching traffic and parking info:", error);
+        document.getElementById("trafficDetails").textContent =
+            "Unable to fetch traffic and parking information.";
+    }
+}
+
+// Call the function on page load
+getTrafficAndParkingInfo();
+
+// Optional: Set up periodic updates (e.g., every 5 minutes)
+setInterval(getTrafficAndParkingInfo, 300000); // Update every 5 minutes
+
+
+    //important info
+    //example
+    //{
+    //"message": "The shop is closed today due to maintenance."
+    //}
+
+    async function updateImportantInfo() {
+    try {
+        // Replace this URL with your actual API endpoint
+        const response = await fetch('https://api.example.com/important-info');
+        const data = await response.json();
+
+        // Example structure: { message: "The shop is closed today due to maintenance." }
+        const importantMessage = data.message;
+
+        // Update the important info block
+        document.getElementById("importantInfoDetails").textContent = importantMessage;
+    } catch (error) {
+        console.error("Error fetching important info:", error);
+        document.getElementById("importantInfoDetails").textContent = "Unable to fetch important information.";
+    }
+}
+
+// Fetch important info every 10 minutes
+updateImportantInfo();
+setInterval(updateImportantInfo, 600000); // 600,000ms = 10 minutes
+
+</script>
+
+<script>
+    //photo Album
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slides img');
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            if (i === index) slide.classList.add('active');
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // Automatically transition slides every 5 seconds
+    setInterval(nextSlide, 5000);
+
+    // Show the first slide on page load
+    showSlide(currentSlide);
 </script>
 
 </body>
