@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - Envisage Cosmetic Clinic</title>
+    <title>Price List - Envisage Cosmetic Clinic</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5dc;
-            color: #333;
+            background-color: #faf3e0;
+            color: #4b3832;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color: #d2b48c;
+            background-color: #c29e7a;
             color: white;
             padding: 20px;
             text-align: center;
+            font-size: 1.8em;
         }
 
         nav ul {
@@ -27,30 +28,80 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            background-color: #bfb091;
+            background-color: #a87b5d;
             padding: 10px 0;
         }
 
         nav ul li a {
-            color: #333;
+            color: #fff;
             text-decoration: none;
             font-size: 1.2em;
         }
 
-        .services-list {
+        .price-list-container {
             padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .category-section {
+            background-color: #d4c1a7;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            flex: 0 1 calc(50% - 20px); /* Two columns with space between */
+        }
+
+        .category-title {
+            background-color: #a87b5d;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            font-size: 1em;
+        }
+
+        table th, table td {
+            padding: 12px;
             text-align: center;
         }
 
-        .service-item {
-            margin-bottom: 20px;
+        table th {
+            background-color: #c29e7a;
+            color: white;
+            font-size: 1em;
+            text-transform: uppercase;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f6f0;
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table tr:hover {
+            background-color: #f0e6d2;
+        }
+
+        table td {
+            color: #4b3832;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Our Services</h1>
+    <h1>Services & Price List</h1>
 </header>
 
 <nav>
@@ -62,20 +113,66 @@
     </ul>
 </nav>
 
-<div class="services-list">
-    <div class="service-item">
-        <h2>Facial Treatment</h2>
-        <p>Price: $150</p>
-    </div>
-    <div class="service-item">
-        <h2>Microdermabrasion</h2>
-        <p>Price: $100</p>
-    </div>
-    <div class="service-item">
-        <h2>Botox Injections</h2>
-        <p>Price: $200 per area</p>
-    </div>
+<div class="price-list-container" id="priceListContainer">
+    <p>Loading price list...</p>
 </div>
+
+<script>
+    async function loadPriceList() {
+        try {
+            const response = await fetch('https://apiwebsite-1.onrender.com/api/treatments');
+            if (!response.ok) throw new Error('Failed to fetch price list.');
+
+            const data = await response.json();
+            const priceListContainer = document.getElementById('priceListContainer');
+            priceListContainer.innerHTML = ''; // Clear loading message
+
+            const priceList = data.data;
+
+            priceList.forEach(category => {
+                // Create category section
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category-section';
+
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.className = 'category-title';
+                categoryTitle.textContent = category.category;
+                categoryDiv.appendChild(categoryTitle);
+
+                // Create table
+                const table = document.createElement('table');
+                const tableHeader = `
+                    <tr>
+                        <th>Treatment Name</th>
+                        <th>Price [AUD$]</th>
+                        <th>Description</th>
+                        <th>Duration [Minutes]</th>
+                    </tr>`;
+                table.innerHTML = tableHeader;
+
+                category.treatments.forEach(treatment => {
+                    const row = `
+                        <tr>
+                            <td>${treatment.name}</td>
+                            <td>${treatment.price}</td>
+                            <td>${treatment.description}</td>
+                            <td>${treatment.duration}</td>
+                        </tr>`;
+                    table.innerHTML += row;
+                });
+
+                categoryDiv.appendChild(table);
+                priceListContainer.appendChild(categoryDiv);
+            });
+        } catch (error) {
+            console.error('Error loading price list:', error);
+            document.getElementById('priceListContainer').innerHTML = '<p>Failed to load price list. Please try again later.</p>';
+        }
+    }
+
+    // Load price list on page load
+    loadPriceList();
+</script>
 
 </body>
 </html>
