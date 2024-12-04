@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Public Calendar</title>
+    <title>Appointment Booking</title>
     <style>
-        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5dc;
@@ -19,30 +18,22 @@
             background-color: #d2b48c;
             color: white;
             padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            height: 60px;
-            margin-right: 20px;
+            text-align: center;
         }
 
         h1 {
             margin: 0;
             font-size: 2em;
-            text-align: center;
         }
 
-        /* Navigation Menu */
         nav {
             background-color: #bfb091;
             padding: 10px 0;
+            margin-bottom: 20px;
         }
 
         nav ul {
-            list-style-type: none;
+            list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
@@ -50,30 +41,19 @@
             gap: 20px;
         }
 
-        nav ul li {
-            display: inline;
-        }
-
         nav ul li a {
-            color: #333;
             text-decoration: none;
+            color: #333;
             font-size: 1.2em;
-            padding: 10px;
         }
 
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-
-        /* Calendar Container */
-        .calendar-container {
-            width: 100%;
+        .calendar-container, .appointment-container {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         iframe {
@@ -81,32 +61,164 @@
             width: 100%;
             height: 600px;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, button, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #d2b48c;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #b38b6d;
+        }
     </style>
 </head>
+
 <body>
 
-<!-- Header with Logo and Title -->
 <header>
-    <img src="logo.png" alt="Clinic Logo" class="logo"> <!-- Replace with your logo path -->
-    <h1>Envisage Cosmetic Clinic</h1>
+    <h1>Book Your Appointment</h1>
 </header>
 
-<!-- Navigation Menu -->
 <nav>
     <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="services.html">Services</a></li>
+        <li><a href="services.html">Services & Price Lists</a></li>
         <li><a href="calendar.html">Time Booking</a></li>
         <li><a href="contact.html">Contact</a></li>
     </ul>
 </nav>
 
-<!-- Page Title and Calendar Embed -->
 <div class="calendar-container">
-    <h1>My Public Calendar</h1>
-    <iframe src="https://calendar.google.com/calendar/embed?src=sfaranak935@gmail.com&ctz=Europe/Vienna"
-            frameborder="0" scrolling="no"></iframe>
+    <h2>Your Public Calendar</h2>
+    <iframe src="https://calendar.google.com/calendar/embed?src=sfaranak935@gmail.com&ctz=Australia/Sydney"
+            frameborder="0" scrolling="no"></iframe></div>
+
+<div class="appointment-container">
+    <h2>Request an Appointment</h2>
+    <form id="appointmentForm">
+        <label for="treatment">Select a Treatment:</label>
+        <select id="treatment" required>
+            <option value="" disabled selected>Loading treatments...</option>
+        </select>
+
+        <label for="date">Select a Date:</label>
+        <select id="date" required>
+            <option value="" disabled selected>Loading available dates...</option>
+        </select>
+
+        <label for="timeSlot">Select a Time Slot:</label>
+        <select id="timeSlot" required>
+            <option value="" disabled selected>Loading available time slots...</option>
+        </select>
+
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+
+        <label for="phone">Your Phone Number:</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+        <button type="submit">Submit Appointment</button>
+    </form>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load Treatments
+        fetch('https://api.example.com/api/treatments') // Replace with your API
+            .then(response => response.json())
+            .then(data => {
+                const treatmentSelect = document.getElementById('treatment');
+                treatmentSelect.innerHTML = '<option value="" disabled selected>Select a Treatment</option>';
+                data.forEach(treatment => {
+                    const option = document.createElement('option');
+                    option.value = treatment.id;
+                    option.textContent = `${treatment.name} (${treatment.duration} mins)`;
+                    treatmentSelect.appendChild(option);
+                });
+            });
+
+        // Load Dates
+        document.getElementById('treatment').addEventListener('change', (event) => {
+            const treatmentId = event.target.value;
+            fetch(`https://api.example.com/api/available-dates?treatmentId=${treatmentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const dateSelect = document.getElementById('date');
+                    dateSelect.innerHTML = '<option value="" disabled selected>Select a Date</option>';
+                    data.dates.forEach(date => {
+                        const option = document.createElement('option');
+                        option.value = date;
+                        option.textContent = date;
+                        dateSelect.appendChild(option);
+                    });
+                });
+        });
+
+        // Load Time Slots
+        document.getElementById('date').addEventListener('change', (event) => {
+            const date = event.target.value;
+            const treatmentId = document.getElementById('treatment').value;
+            fetch(`https://api.example.com/api/available-slots?treatmentId=${treatmentId}&date=${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    const timeSlotSelect = document.getElementById('timeSlot');
+                    timeSlotSelect.innerHTML = '<option value="" disabled selected>Select a Time Slot</option>';
+                    data.slots.forEach(slot => {
+                        const option = document.createElement('option');
+                        option.value = slot;
+                        option.textContent = slot;
+                        timeSlotSelect.appendChild(option);
+                    });
+                });
+        });
+
+        // Submit Form
+        document.getElementById('appointmentForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = {
+                treatmentId: document.getElementById('treatment').value,
+                date: document.getElementById('date').value,
+                timeSlot: document.getElementById('timeSlot').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            fetch('https://api.example.com/api/book-appointment', { // Replace with your API
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Appointment successfully booked!');
+                    } else {
+                        alert('Failed to book the appointment. Please try again.');
+                    }
+                });
+        });
+    });
+</script>
+
 </body>
+
 </html>
