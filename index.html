@@ -321,6 +321,45 @@ button.next:hover {
     line-height: 1.5; /* Consistent spacing */
 }
 
+    .important-info {
+        background-color: #d2b48c;
+        color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: left; /* Align text to the left */
+    }
+
+.important-info {
+    flex: 1;
+    max-width: 300px;
+    background: linear-gradient(135deg, #d4af37, #b5651d); /* Gold to soft brown gradient */
+    color: #000; /* Default text color */
+    border: 2px solid #d4af37; /* Golden border */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    text-align: left; /* Align text to the left */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animation for hover effect */
+}
+
+.important-info:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.important-info h3 {
+    color: #ffffff; /* Keep the header text white */
+    text-align: center; /* Center the header */
+    margin-bottom: 10px;
+}
+
+.important-info p {
+    font-size: 1.1em; /* Slightly larger text */
+    margin: 10px 0; /* Space between lines */
+    line-height: 1.6; /* Improve readability */
+    text-align: left; /* Keep text aligned to the left */
+}
+
     </style>
 </head>
 <body>
@@ -356,7 +395,7 @@ button.next:hover {
     </div>
     <div class="important-info" id="importantInfoContainer">
         <h3>Important Info</h3>
-        <p id="importantInfoDetails">Loading important information...</p>
+        <p id="important-info-text">Loading the information...</p>
     </div>
 </div>
 
@@ -377,11 +416,6 @@ button.next:hover {
     <div class="slides">
         <img alt="Photo 1" class="active" src="photoalbum/photo_1.png">
         <img alt="Photo 2" src="photoalbum/Photo_2.png">
-        <img alt="Photo 3" src="photoalbum/Photo_3.png">
-        <img alt="Photo 4" src="photoalbum/Photo_4.png">
-        <img alt="Photo 5" src="photoalbum/Photo_5.png">
-        <img alt="Photo 6" src="photoalbum/Photo_6.png">
-        <img alt="Photo 7" src="photoalbum/Photo_7.png">
     </div>
     <!-- Optional: Add navigation buttons -->
     <button class="prev" onclick="prevSlide()">&#10094;</button>
@@ -577,34 +611,40 @@ getTrafficAndParkingInfo();
 // Optional: Set up periodic updates (e.g., every 5 minutes)
 setInterval(getTrafficAndParkingInfo, 300000); // Update every 5 minutes
 
-    //important info
-    //example
-    //{
-    //"message": "The shop is closed today due to maintenance."
-    //}
-    //}
 
-    async function updateImportantInfo() {
-    try {
-        // Replace this URL with your actual API endpoint
-        const response = await fetch('https://api.example.com/important-info');
-        const data = await response.json();
+    // important info section
+    document.addEventListener('DOMContentLoaded', () => {
+    fetch('https://apiwebsite-1.onrender.com/api/important_info') // Replace with your actual API endpoint
+        .then(response => response.json())
+        .then(data => {
+            const importantInfoText = document.getElementById('important-info-text');
+            if (data.info) {
+                const sentences = data.info.split('\n');
+                importantInfoText.innerHTML = ''; // Clear placeholder text
 
-        // Example structure: { message: "The shop is closed today due to maintenance." }
-        const importantMessage = data.message;
+                sentences.forEach((sentence, index) => {
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = sentence.trim(); // Trim whitespace
 
-        // Update the important info block
-        document.getElementById("importantInfoDetails").textContent = importantMessage;
-    } catch (error) {
-        console.error("Error fetching important info:", error);
-        document.getElementById("importantInfoDetails").textContent = "Unable to fetch important information.";
-    }
-}
-
-// Fetch important info every 10 minutes
-updateImportantInfo();
-setInterval(updateImportantInfo, 600000); // 600,000ms = 10 minutes
-
+                    // Add styling for the first and second sentences
+                    if (index === 0) {
+                        paragraph.style.fontWeight = 'bold';
+                        paragraph.style.color = '#00008B'; // Dark blue for the first sentence
+                    } else {
+                        paragraph.style.color = '#000000'; // Black for the second sentence
+                    }
+                    paragraph.style.marginBottom = '10px'; // Space between sentences
+                    importantInfoText.appendChild(paragraph);
+                });
+            } else {
+                importantInfoText.textContent = 'No important information available at this time.';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching important info:', error);
+            document.getElementById('important-info-text').textContent = 'Error loading important information.';
+        });
+});
 </script>
 
 <script>
@@ -662,6 +702,7 @@ displayMotivationalQuote();
 // Optional: Update the quote every hour
 setInterval(displayMotivationalQuote, 3600000); // 1 hour in milliseconds
 </script>
+
 
 </body>
 </html>
