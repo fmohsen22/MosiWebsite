@@ -6,96 +6,113 @@
     <title>Price List - Envisage Cosmetic Clinic</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #faf3e0;
-            color: #4b3832;
-            margin: 0;
-            padding: 0;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #faf3e0;
+    color: #4b3832;
+    margin: 0;
+    padding: 0;
+}
 
-        header {
-            background-color: #c29e7a;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.8em;
-        }
+header {
+    background-color: #c29e7a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.8em;
+}
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            background-color: #a87b5d;
-            padding: 10px 0;
-        }
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #a87b5d;
+    padding: 10px 0;
+}
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2em;
+}
 
-        .price-list-container {
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
+.price-list-container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
 
-        .category-section {
-            background-color: #d4c1a7;
-            border-radius: 8px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            flex: 0 1 calc(50% - 20px); /* Two columns with space between */
-        }
+.category-section {
+    background-color: #d4c1a7;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    flex: 1 1 calc(50% - 20px); /* Two columns by default */
+    min-width: 300px; /* Ensure the cards don't shrink too much */
+}
 
-        .category-title {
-            background-color: #a87b5d;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 1.5em;
-        }
+.category-title {
+    background-color: #a87b5d;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.5em;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0;
-            font-size: 1em;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: 1em;
+}
 
-        table th, table td {
-            padding: 12px;
-            text-align: center;
-        }
+table th, table td {
+    padding: 12px;
+    text-align: center;
+}
 
-        table th {
-            background-color: #c29e7a;
-            color: white;
-            font-size: 1em;
-            text-transform: uppercase;
-        }
+table th {
+    background-color: #c29e7a;
+    color: white;
+    font-size: 1em;
+    text-transform: uppercase;
+}
 
-        table tr:nth-child(even) {
-            background-color: #f9f6f0;
-        }
+table tr:nth-child(even) {
+    background-color: #f9f6f0;
+}
 
-        table tr:nth-child(odd) {
-            background-color: #fff;
-        }
+table tr:nth-child(odd) {
+    background-color: #fff;
+}
 
-        table tr:hover {
-            background-color: #f0e6d2;
-        }
+table tr:hover {
+    background-color: #f0e6d2;
+}
 
-        table td {
-            color: #4b3832;
-        }
+table td {
+    color: #4b3832;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .category-section {
+        flex: 1 1 100%; /* Full width for mobile */
+    }
+
+    table th, table td {
+        font-size: 0.9em; /* Reduce font size for smaller screens */
+        padding: 10px; /* Adjust padding */
+    }
+
+    .category-title {
+        font-size: 1.2em; /* Adjust title font size */
+    }
+}
     </style>
 </head>
 <body>

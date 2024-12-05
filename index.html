@@ -360,6 +360,104 @@ button.next:hover {
     text-align: left; /* Keep text aligned to the left */
 }
 
+
+        //for mobile phone
+        /* General Styling - Maintain existing styles for desktop */
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    /* Header */
+    header {
+        flex-direction: column; /* Stack logo and title vertically */
+        align-items: center; /* Center align for mobile */
+    }
+
+    .logo {
+        height: 100px; /* Reduce logo size */
+        margin: 0 auto 10px; /* Center and add spacing below */
+    }
+
+    h1 {
+        font-size: 2em; /* Reduce header font size */
+        text-align: center;
+    }
+
+    /* Navigation Menu */
+    nav ul {
+        flex-direction: column; /* Stack navigation links vertically */
+        gap: 10px; /* Add spacing between links */
+    }
+
+    nav ul li a {
+        font-size: 1em; /* Reduce font size */
+        padding: 8px; /* Reduce padding */
+    }
+
+    /* Hero Section */
+    .hero-section {
+        height: 40vh; /* Reduce height for mobile */
+    }
+
+    .hero-text {
+        font-size: 1.5em; /* Adjust font size */
+    }
+
+    /* Info Container */
+    .info-container {
+        flex-direction: column; /* Stack info blocks vertically */
+        align-items: center; /* Center align blocks */
+    }
+
+    .info-container > div {
+        max-width: 100%; /* Full width for each block */
+        margin-bottom: 15px; /* Add spacing between blocks */
+    }
+
+    /* Important Info */
+    .important-info {
+        max-width: 100%; /* Full width */
+        padding: 15px; /* Adjust padding */
+    }
+
+    .important-info h3 {
+        font-size: 1.5em; /* Adjust font size */
+        margin-bottom: 10px;
+    }
+
+    .important-info p {
+        font-size: 1em; /* Adjust text size for readability */
+    }
+
+    /* Photo Album */
+    .photo-album {
+        max-width: 100%; /* Full width for mobile */
+    }
+
+    .photo-album img {
+        height: auto; /* Ensure images resize correctly */
+    }
+
+    /* Chat Widget */
+    .chat-widget {
+        bottom: 10px;
+        right: 10px;
+        width: 40px; /* Adjust size for mobile */
+        height: 40px;
+    }
+
+    .chat-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+
+    /* Other Adjustments */
+    .clock-container {
+        flex-direction: column; /* Stack clock items vertically */
+        gap: 15px; /* Adjust spacing */
+        text-align: center; /* Center align text */
+    }
+}
     </style>
 </head>
 <body>
