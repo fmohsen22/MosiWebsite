@@ -115,6 +115,9 @@
 <div class="appointment-container">
     <h2>Request an Appointment</h2>
     <form id="appointmentForm">
+        <label for="fullName">Your Full Name:</label>
+        <input type="text" id="fullName" placeholder="Enter your full name" required>
+
         <label for="treatment">Select a Treatment:</label>
         <select id="treatment" required>
             <option value="" disabled selected>Loading treatments...</option>
@@ -141,84 +144,322 @@
 </div>
 
 <script>
+    // Load treatments list
     document.addEventListener('DOMContentLoaded', () => {
-        // Load Treatments
-        fetch('https://api.example.com/api/treatments') // Replace with your API
-            .then(response => response.json())
+        const treatmentSelect = document.getElementById('treatment');
+
+        // Fetch Treatments
+        fetch('https://apiwebsite-1.onrender.com/api/calendar/dropdown-list')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch treatments: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                const treatmentSelect = document.getElementById('treatment');
+                console.log('Fetched Data:', data); // Log for debugging
+
+                // Clear the placeholder in the dropdown
                 treatmentSelect.innerHTML = '<option value="" disabled selected>Select a Treatment</option>';
-                data.forEach(treatment => {
-                    const option = document.createElement('option');
-                    option.value = treatment.id;
-                    option.textContent = `${treatment.name} (${treatment.duration} mins)`;
-                    treatmentSelect.appendChild(option);
+
+                // Loop through the topics and their treatments
+                data.forEach(topic => {
+                    const optGroup = document.createElement('optgroup'); // Create optgroup for each topic
+                    optGroup.label = topic.topic; // Set the optgroup label
+
+                    topic.treatmentDetail.forEach(treatment => {
+                        const option = document.createElement('option');
+                        option.value = treatment.treatment; // Set the option value to the treatment name
+                        option.textContent = `${treatment.treatment} (${treatment.duration} mins)`; // Set the display text
+                        option.setAttribute('data-duration', treatment.duration); // Add duration as a custom attribute
+                        optGroup.appendChild(option); // Add option to the optgroup
+                    });
+
+                    treatmentSelect.appendChild(optGroup); // Add the optgroup to the dropdown
                 });
+            })
+            .catch(error => {
+                console.error('Error fetching treatments:', error);
+                treatmentSelect.innerHTML = '<option value="" disabled>Error loading treatments</option>';
+            });
+    });
+
+<!--   document.addEventListener('DOMContentLoaded', () => {-->
+<!--    const dateSelect = document.getElementById('date');-->
+<!--    const timeSlotSelect = document.getElementById('timeSlot');-->
+<!--    let availableSlots = [];-->
+
+<!--    // Fetch free slots for the next 8 weeks-->
+<!--    fetch('https://apiwebsite-1.onrender.com/api/calendar/free-slots', {-->
+<!--        method: 'POST',-->
+<!--        headers: {-->
+<!--            'Content-Type': 'application/json',-->
+<!--        },-->
+<!--        body: '8', // Send the raw number as a string-->
+<!--    })-->
+<!--        .then((response) => {-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error(`Failed to fetch free slots: ${response.status} ${response.statusText}`);-->
+<!--            }-->
+<!--            return response.json();-->
+<!--        })-->
+<!--        .then((data) => {-->
+<!--            console.log('Free slots fetched:', data); // Debugging purposes-->
+<!--            availableSlots = computeDaysFromSlots(data); // Compute all days from the slots-->
+<!--            populateDates(availableSlots); // Populate the dates dropdown-->
+<!--        })-->
+<!--        .catch((error) => {-->
+<!--            console.error('Error fetching free slots:', error);-->
+<!--            dateSelect.innerHTML = '<option value="" disabled>Error loading dates</option>';-->
+<!--        });-->
+
+<!--    // Compute all individual days within each slot range-->
+<!--    function computeDaysFromSlots(slots) {-->
+<!--        const days = new Set(); // Use a Set to avoid duplicates-->
+<!--        slots.forEach((slot) => {-->
+<!--            const [start, end] = slot.split(' to ');-->
+<!--            const startDate = new Date(start);-->
+<!--            const endDate = new Date(end);-->
+
+<!--            // Generate all dates between startDate and endDate-->
+<!--            for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {-->
+<!--                days.add(date.toISOString().split('T')[0]); // Add date in YYYY-MM-DD format-->
+<!--            }-->
+<!--        });-->
+
+<!--        return Array.from(days).sort(); // Convert Set to sorted Array-->
+<!--    }-->
+
+<!--    // Populate the dates dropdown-->
+<!--    function populateDates(dates) {-->
+<!--        dateSelect.innerHTML = '<option value="" disabled selected>Select a Date</option>';-->
+<!--        dates.forEach((date) => {-->
+<!--            const option = document.createElement('option');-->
+<!--            option.value = date;-->
+<!--            option.textContent = date;-->
+<!--            dateSelect.appendChild(option);-->
+<!--        });-->
+
+<!--        // Add change listener to populate time slots for the selected date-->
+<!--        dateSelect.addEventListener('change', (event) => {-->
+<!--            const selectedDate = event.target.value;-->
+<!--            populateTimeSlots(selectedDate, availableSlots);-->
+<!--        });-->
+<!--    }-->
+
+<!--    // Populate the time slots dropdown for the selected date-->
+<!--    function populateTimeSlots(selectedDate, slots) {-->
+<!--        timeSlotSelect.innerHTML = '<option value="" disabled selected>Select a Time Slot</option>';-->
+
+<!--        // Define working hours-->
+<!--        const startHour = 9; // 9:00 AM-->
+<!--        const endHour = 18; // 6:00 PM-->
+
+<!--        // Filter free slots for the selected date-->
+<!--        const busyTimes = [];-->
+<!--        slots.forEach((slot) => {-->
+<!--            const [start, end] = slot.split(' to ');-->
+<!--            const startDate = new Date(start);-->
+<!--            const endDate = new Date(end);-->
+
+<!--            if (startDate.toISOString().split('T')[0] === selectedDate) {-->
+<!--                busyTimes.push({ start: startDate, end: endDate });-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Generate all time slots within working hours-->
+<!--        for (let hour = startHour; hour < endHour; hour++) {-->
+<!--            const slotStart = new Date(`${selectedDate}T${hour.toString().padStart(2, '0')}:00:00`);-->
+<!--            const slotEnd = new Date(`${selectedDate}T${(hour + 1).toString().padStart(2, '0')}:00:00`);-->
+
+<!--            // Check if the slot conflicts with busy times-->
+<!--            const isAvailable = !busyTimes.some((busy) => {-->
+<!--                return (-->
+<!--                    (slotStart >= busy.start && slotStart < busy.end) || // Overlaps with busy start-->
+<!--                    (slotEnd > busy.start && slotEnd <= busy.end) || // Overlaps with busy end-->
+<!--                    (slotStart <= busy.start && slotEnd >= busy.end) // Fully contains a busy slot-->
+<!--                );-->
+<!--            });-->
+
+<!--            if (isAvailable) {-->
+<!--                const option = document.createElement('option');-->
+<!--                option.value = `${slotStart.toISOString()} to ${slotEnd.toISOString()}`;-->
+<!--                option.textContent = `${slotStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} to ${slotEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;-->
+<!--                timeSlotSelect.appendChild(option);-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+<!--});-->
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dateSelect = document.getElementById('date');
+        const timeSlotSelect = document.getElementById('timeSlot');
+        let availableSlots = [];
+
+        // Fetch free slots for the next 8 weeks
+        fetch('https://apiwebsite-1.onrender.com/api/calendar/free-slots', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: '8', // Send the number of weeks as a string
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch free slots: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Free slots fetched:', data);
+                availableSlots = processFreeSlots(data); // Process the free slots
+                populateDates(availableSlots); // Populate the date dropdown
+            })
+            .catch((error) => {
+                console.error('Error fetching free slots:', error);
+                dateSelect.innerHTML = '<option value="" disabled>Error loading dates</option>';
             });
 
-        // Load Dates
-        document.getElementById('treatment').addEventListener('change', (event) => {
-            const treatmentId = event.target.value;
-            fetch(`https://api.example.com/api/available-dates?treatmentId=${treatmentId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const dateSelect = document.getElementById('date');
-                    dateSelect.innerHTML = '<option value="" disabled selected>Select a Date</option>';
-                    data.dates.forEach(date => {
-                        const option = document.createElement('option');
-                        option.value = date;
-                        option.textContent = date;
-                        dateSelect.appendChild(option);
-                    });
-                });
+        // Process free slots and return a structured object
+        function processFreeSlots(slots) {
+            return slots.map(slot => {
+                const [start, end] = slot.split(' to ');
+                return {
+                    start: new Date(start),
+                    end: new Date(end),
+                };
+            });
+        }
+
+        // Populate the dates dropdown
+        function populateDates(slots) {
+            const uniqueDates = new Set();
+
+            slots.forEach(({ start, end }) => {
+                const currentDate = new Date(start);
+                while (currentDate <= end) {
+                    uniqueDates.add(currentDate.toISOString().split('T')[0]); // Add unique dates in YYYY-MM-DD format
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+            });
+
+            const sortedDates = Array.from(uniqueDates).sort();
+            dateSelect.innerHTML = '<option value="" disabled selected>Select a Date</option>';
+            sortedDates.forEach(date => {
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                dateSelect.appendChild(option);
+            });
+
+            // Add change listener to populate time slots for the selected date
+            dateSelect.addEventListener('change', (event) => {
+                const selectedDate = event.target.value;
+                populateTimeSlots(selectedDate, slots);
+            });
+        }
+
+        // Populate the time slots dropdown for the selected date
+    function populateTimeSlots(selectedDate, slots) {
+    timeSlotSelect.innerHTML = '<option value="" disabled selected>Select a Time Slot</option>';
+
+    // Convert selected date to Sydney time
+    const selectedDateSydney = new Date(selectedDate).toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney' });
+
+    // Filter slots for the selected date
+    const filteredSlots = slots.filter(({ start, end }) => {
+        const startSydney = new Date(start).toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney' });
+        const endSydney = new Date(end).toLocaleDateString('en-AU', { timeZone: 'Australia/Sydney' });
+
+        return selectedDateSydney >= startSydney && selectedDateSydney <= endSydney;
+    });
+
+    console.log("Filtered Slots (Sydney Time):", filteredSlots);
+
+    // Define working hours
+    const startHour = 9; // 9:00 AM
+    const endHour = 18; // 6:00 PM
+
+    for (let hour = startHour; hour < endHour; hour++) {
+        const slotStart = new Date(`${selectedDate}T${hour.toString().padStart(2, '0')}:00:00`);
+        const slotEnd = new Date(`${selectedDate}T${(hour + 1).toString().padStart(2, '0')}:00:00`);
+
+        // Convert slots to Sydney time for comparison
+        const slotStartSydney = slotStart.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
+        const slotEndSydney = slotEnd.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
+
+        // Check if the slot is available
+        const isAvailable = filteredSlots.some(({ start, end }) => {
+            const startSydney = new Date(start).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
+            const endSydney = new Date(end).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
+
+            return slotStartSydney >= startSydney && slotEndSydney <= endSydney;
         });
 
-        // Load Time Slots
-        document.getElementById('date').addEventListener('change', (event) => {
-            const date = event.target.value;
-            const treatmentId = document.getElementById('treatment').value;
-            fetch(`https://api.example.com/api/available-slots?treatmentId=${treatmentId}&date=${date}`)
-                .then(response => response.json())
-                .then(data => {
-                    const timeSlotSelect = document.getElementById('timeSlot');
-                    timeSlotSelect.innerHTML = '<option value="" disabled selected>Select a Time Slot</option>';
-                    data.slots.forEach(slot => {
-                        const option = document.createElement('option');
-                        option.value = slot;
-                        option.textContent = slot;
-                        timeSlotSelect.appendChild(option);
-                    });
-                });
-        });
-
-        // Submit Form
-        document.getElementById('appointmentForm').addEventListener('submit', (event) => {
-            event.preventDefault();
-            const formData = {
-                treatmentId: document.getElementById('treatment').value,
-                date: document.getElementById('date').value,
-                timeSlot: document.getElementById('timeSlot').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value
-            };
-
-            fetch('https://api.example.com/api/book-appointment', { // Replace with your API
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Appointment successfully booked!');
-                    } else {
-                        alert('Failed to book the appointment. Please try again.');
-                    }
-                });
-        });
+        if (isAvailable) {
+            const option = document.createElement('option');
+            option.value = `${slotStart.toISOString()} to ${slotEnd.toISOString()}`;
+            option.textContent = `${slotStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} to ${slotEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+            timeSlotSelect.appendChild(option);
+        }
+    }
+}
     });
 </script>
 
+<script>
+    document.getElementById('appointmentForm').addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent form from reloading the page
+
+         // Get the selected treatment option
+        const treatmentSelect = document.getElementById('treatment');
+        const selectedOption = treatmentSelect.options[treatmentSelect.selectedIndex];
+        const duration = selectedOption.getAttribute('data-duration'); // Extract the duration
+
+        // Gather data from the form
+    const appointmentData = {
+        fullName: document.getElementById('fullName').value, // Add full name
+        treatment: treatmentSelect.value,
+        duration: duration, // Include duration in the submitted data
+        date: document.getElementById('date').value,
+        timeSlot: document.getElementById('timeSlot').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+    };
+
+        console.log('Submitting appointment data:', appointmentData); // Log for debugging
+
+        // Send the data as JSON to the API
+        fetch('https://apiwebsite-1.onrender.com/api/calendar/appointments', { // Switch to HTTP for local testing
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(appointmentData),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    // Log error response
+                    console.error('Error:', response.status, response.statusText);
+                    return response.json().then((data) => {
+                        alert(`Failed to submit appointment: ${data.message || 'Unknown error'}`);
+                        throw new Error(data.message || 'Failed to submit appointment');
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Appointment response:', data);
+                alert('Appointment submitted successfully!');
+            })
+            .catch((error) => {
+                console.error('Submission error:', error);
+                alert('Error submitting appointment. Please try again.');
+            });
+    });
+</script>
 </body>
 
 </html>
