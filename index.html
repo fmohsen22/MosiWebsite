@@ -542,7 +542,7 @@ button.next:hover {
         document.getElementById('chatModal').classList.toggle('show');
     }
 
-    async function sendMessage() {
+      async function sendMessage() {
     const input = document.getElementById('userInput');
     const message = input.value;
     if (message.trim() === '') return;
@@ -561,22 +561,30 @@ button.next:hover {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: message })
+            body: JSON.stringify({ user_input: message }) // Ensure the key matches your API's expected field
         });
 
         if (response.ok) {
             const data = await response.json();
-            console.log("API Response:", data); // Debugging: Log the entire response
 
-            // Display bot's response from the API
+            // Debugging: Log the entire response
+            console.log("API Response:", data);
+
+      // Display bot's response from the API
             const botMessage = document.createElement('div');
-            botMessage.textContent = "Bot: " + data.reply; // Access the "reply" field in the response JSON
-            chatMessages.appendChild(botMessage);
+
+            // Extract the response field from the API response JSON
+            const botAnswer = JSON.parse(data.reply).response; // Parse JSON and extract the "response" field
+
+            botMessage.textContent = botAnswer; // Set the bot's answer as the message content
+            chatMessages.appendChild(botMessage); // Add the bot's message to the chat
         } else {
-            throw new Error("API returned a non-200 status");
+            throw new Error(`API returned a non-200 status: ${response.status}`);
         }
     } catch (error) {
         console.error("Error sending message to API:", error);
+
+        // Display an error message in the chat
         const errorMessage = document.createElement('div');
         errorMessage.textContent = "Error: Unable to connect to the chat service. 😥";
         chatMessages.appendChild(errorMessage);
