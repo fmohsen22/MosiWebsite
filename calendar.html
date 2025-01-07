@@ -149,7 +149,7 @@
         const treatmentSelect = document.getElementById('treatment');
 
         // Fetch Treatments
-        fetch('http://localhost:8080/api/calendar/dropdown-list')
+        fetch('https://apiwebsite-1.onrender.com/api/calendar/dropdown-list')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`Failed to fetch treatments: ${response.statusText}`);
@@ -190,7 +190,7 @@
 <!--    let availableSlots = [];-->
 
 <!--    // Fetch free slots for the next 8 weeks-->
-<!--    fetch('http://localhost:8080/api/calendar/free-slots', {-->
+<!--    fetch('https://apiwebsite-1.onrender.com/api/calendar/free-slots', {-->
 <!--        method: 'POST',-->
 <!--        headers: {-->
 <!--            'Content-Type': 'application/json',-->
@@ -300,7 +300,7 @@
         let availableSlots = [];
 
         // Fetch free slots for the next 8 weeks
-        fetch('http://localhost:8080/api/calendar/free-slots', {
+        fetch('https://apiwebsite-1.onrender.com/api/calendar/free-slots', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -412,7 +412,7 @@
         console.log('Submitting appointment data:', appointmentData); // Log for debugging
 
         // Send the data as JSON to the API
-        fetch('http://localhost:8080/api/calendar/appointments', { // Switch to HTTP for local testing
+        fetch('https://apiwebsite-1.onrender.com/api/calendar/appointments', { // Switch to HTTP for local testing
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
